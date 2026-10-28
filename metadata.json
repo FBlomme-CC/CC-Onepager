@@ -1,0 +1,8 @@
+{
+  "name": "CostCards – One Pager",
+  "description": "Modular bill of materials (BOM), manufacturing unit economics, and real-time margin simulation software for SME producers and manufacturers.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
