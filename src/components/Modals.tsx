@@ -4,6 +4,7 @@ import {
   CheckCircle2,
   Calendar,
   ArrowRight,
+  Loader2,
 } from 'lucide-react';
 
 interface ModalsProps {
@@ -23,7 +24,40 @@ export const Modals: React.FC<ModalsProps> = ({
     industry: 'Verpakking & Drukwerk',
     preferredTime: 'Ochtend (09:00 - 12:00 CET)',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoSubmitted, setDemoSubmitted] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleDemoSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!demoForm.email || !demoForm.email.includes('@')) {
+      setErrorMsg('Vul een geldig e-mailadres in.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    setErrorMsg('');
+
+    try {
+      const response = await fetch('/api/book-demo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(demoForm),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Er is een fout opgetreden.');
+      }
+
+      setDemoSubmitted(true);
+    } catch (err: any) {
+      console.error('Fout bij versturen demo aanvraag:', err);
+      setErrorMsg(err.message || 'Er is een fout opgetreden bij het verzenden van de aanvraag.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -39,8 +73,8 @@ export const Modals: React.FC<ModalsProps> = ({
                   <Calendar className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-white text-base">Boek een 1-op-1 Architectuur Demo</h3>
-                  <span className="text-xs text-neutral-400">Afgestemd op de stuklijsten en calculaties van jouw fabriek</span>
+                  <h3 className="font-bold text-white text-base">Boek een 1-op-1 Demo</h3>
+                  <span className="text-xs text-neutral-400">Afgestemd op jouw sector</span>
                 </div>
               </div>
               <button
@@ -59,26 +93,23 @@ export const Modals: React.FC<ModalsProps> = ({
                   <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h4 className="text-xl font-bold text-white">Demo Gereserveerd!</h4>
+                  <h4 className="text-xl font-bold text-white">Aanvraag Verzonden!</h4>
                   <p className="text-sm text-neutral-300 max-w-sm mx-auto">
-                    We hebben de kalenderuitnodiging en voorbereidende details gestuurd naar <strong>{demoForm.email}</strong>. Onze kostprijsarchitecten kijken uit naar het gesprek.
+                    Je demo-aanvraag is verstuurd naar <strong>info@costcards.io</strong>. Wij nemen snel contact op via <strong>{demoForm.email}</strong> om de afspraak definitief in te plannen.
                   </p>
                   <button
                     type="button"
-                    onClick={onCloseDemo}
+                    onClick={() => {
+                      setDemoSubmitted(false);
+                      onCloseDemo();
+                    }}
                     className="mt-4 px-6 py-2.5 text-xs font-bold text-white bg-white/10 rounded-lg hover:bg-white/20 cursor-pointer"
                   >
                     Venster Sluiten
                   </button>
                 </div>
               ) : (
-                <form
-                  onSubmit={(e) => {
-                    e.preventDefault();
-                    setDemoSubmitted(true);
-                  }}
-                  className="space-y-4"
-                >
+                <form onSubmit={handleDemoSubmit} className="space-y-4">
                   <div>
                     <label className="block text-xs font-semibold text-neutral-300 mb-1">
                       Je Volledige Naam
@@ -154,16 +185,30 @@ export const Modals: React.FC<ModalsProps> = ({
                     </select>
                   </div>
 
+                  {errorMsg && (
+                    <p className="text-xs text-red-400 font-medium">{errorMsg}</p>
+                  )}
+
                   <div className="pt-2">
                     <button
                       type="submit"
-                      className="w-full py-3 text-sm font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-xl shadow-lg hover:opacity-95 transition-all cursor-pointer flex items-center justify-center gap-2"
+                      disabled={isSubmitting}
+                      className="w-full py-3 text-sm font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-xl shadow-lg hover:opacity-95 transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
                     >
-                      <span>Bevestig 30-Minuten Demo</span>
-                      <ArrowRight className="w-4 h-4" />
+                      {isSubmitting ? (
+                        <>
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          <span>Aanvraag versturen naar info@costcards.io...</span>
+                        </>
+                      ) : (
+                        <>
+                          <span>Bevestig 30-Minuten Demo</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </>
+                      )}
                     </button>
                     <span className="block text-[11px] text-center text-neutral-400 mt-2">
-                      Directe sessie met senior productarchitecten. Geen opdringerige verkopers.
+                      De aanvraag wordt rechtstreeks verstuurd naar info@costcards.io. Geen opdringerige verkopers.
                     </span>
                   </div>
                 </form>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ShieldCheck, Lock, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Lock, CheckCircle2, Loader2 } from 'lucide-react';
 
 interface FooterProps {
   onOpenDemo: () => void;
@@ -8,16 +8,37 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
       setError('Vul een geldig zakelijk e-mailadres in.');
       return;
     }
     setError('');
-    setSubmitted(true);
+    setIsSubmitting(true);
+
+    try {
+      const response = await fetch('/api/book-demo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, company: 'Via Footer Formulier' }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || 'Er ging iets mis bij het versturen.');
+      }
+
+      setSubmitted(true);
+    } catch (err: any) {
+      console.error('Footer form submission error:', err);
+      setError(err.message || 'Er is een fout opgetreden.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -32,7 +53,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
             BESCHERM JE MARGES
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Stop met gissen naar je eenheidsmarges. Boek vandaag een demo.
+            Stop met gokken naar je marges. Boek vandaag een demo.
           </h2>
           <p className="text-neutral-300 text-sm sm:text-base max-w-xl mx-auto">
             Ontdek hoe verpakkingsbedrijven, brouwerijen en industriële producenten Excel-chaos vervangen door modulaire CostCards.
@@ -43,7 +64,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
             {submitted ? (
               <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Bedankt! We hebben een demo-uitnodiging gestuurd naar {email}.</span>
+                <span>Bedankt! Je aanvraag is verzonden naar info@costcards.io. Wij nemen snel contact op via {email}.</span>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-2">
@@ -60,15 +81,22 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
                   />
                   <button
                     type="submit"
-                    className="px-5 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] hover:opacity-95 transition-opacity flex items-center justify-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-[#FF5A5F]/20"
+                    disabled={isSubmitting}
+                    className="px-5 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] hover:opacity-95 transition-opacity flex items-center justify-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-[#FF5A5F]/20 disabled:opacity-50"
                   >
-                    <span>Vraag Demo Aan</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    {isSubmitting ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <>
+                        <span>Vraag Demo Aan</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </>
+                    )}
                   </button>
                 </div>
                 {error && <p className="text-xs text-red-400 text-left pl-1">{error}</p>}
                 <p className="text-[11px] text-neutral-400">
-                  1-op-1 sessie van 30 minuten met kostprijsarchitecten · Geen enkele verplichting
+                  1-op-1 sessie · Geen enkele verplichting
                 </p>
               </form>
             )}
@@ -141,7 +169,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
                 <a href="https://www.costcards.io" className="hover:text-white transition-colors">Documentatie</a>
               </li>
               <li>
-                <a href="mailto:support@costcards.io" className="hover:text-white transition-colors">Ondersteuning</a>
+                <a href="mailto:info@costcards.io" className="hover:text-white transition-colors">info@costcards.io</a>
               </li>
             </ul>
           </div>
