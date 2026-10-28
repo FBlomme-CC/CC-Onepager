@@ -15,13 +15,13 @@ export const SpreadsheetVsCostCards: React.FC = () => {
         {/* Section Header - Minimalist */}
         <div className="max-w-2xl mx-auto text-center space-y-3 mb-10">
           <div className="text-xs font-mono uppercase tracking-widest text-[#FF5A5F] font-bold">
-            THE SPREADSHEET PROBLEM
+            HET SPREADSHEETPROBLEEM
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Why traditional spreadsheets fail your margins
+            Waarom traditionele spreadsheets je marges aantasten
           </h2>
           <p className="text-neutral-400 text-sm leading-relaxed">
-            Excel was built for generic accounting in 1985—not for material inflation, scrap rates, and fast manufacturing bids.
+            Excel is in 1985 gebouwd voor algemene boekhouding—niet voor fluctuerende grondstofprijzen, complexe afvalpercentages en snelle productie-offertes.
           </p>
         </div>
 
@@ -33,9 +33,9 @@ export const SpreadsheetVsCostCards: React.FC = () => {
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-2.5">
                 <FileSpreadsheet className="w-4 h-4 text-red-400" />
-                <h3 className="text-base font-bold text-white">Static Spreadsheets</h3>
+                <h3 className="text-base font-bold text-white">Statische Excel Bestanden</h3>
               </div>
-              <span className="text-[10px] font-mono text-red-400 font-bold uppercase">HIGH RISK</span>
+              <span className="text-[10px] font-mono text-red-400 font-bold uppercase">HOOG RISICO</span>
             </div>
 
             <div className="space-y-3">
@@ -58,7 +58,7 @@ export const SpreadsheetVsCostCards: React.FC = () => {
                 <Layers className="w-4 h-4 text-[#FF5A5F]" />
                 <h3 className="text-base font-bold text-white">CostCards Platform</h3>
               </div>
-              <span className="text-[10px] font-mono text-[#FFAA40] font-bold uppercase">DYNAMIC & SYNCED</span>
+              <span className="text-[10px] font-mono text-[#FFAA40] font-bold uppercase">DYNAMISCH &amp; GEKOPPELD</span>
             </div>
 
             <div className="space-y-3">

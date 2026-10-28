@@ -1,11 +1,7 @@
-/**
- * @license
- * SPDX-License-Identifier: Apache-2.0
- */
-
 import React, { useState } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
+import { HowItWorks } from './components/HowItWorks';
 import { SpreadsheetVsCostCards } from './components/SpreadsheetVsCostCards';
 import { FeaturesSection } from './components/FeaturesSection';
 import { AiSearchExtract } from './components/AiSearchExtract';
@@ -14,7 +10,6 @@ import { Footer } from './components/Footer';
 import { Modals } from './components/Modals';
 
 export default function App() {
-  const [walkthroughOpen, setWalkthroughOpen] = useState(false);
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
@@ -22,42 +17,48 @@ export default function App() {
       {/* Ambient background glows */}
       <div className="fixed inset-0 bg-radial-mesh pointer-events-none -z-10" />
 
-      {/* 1. Header & Navigation (Fixed / Dark Glass) */}
+      {/* 1. Header & Navigation */}
       <Header
         onOpenDemo={() => setDemoOpen(true)}
       />
 
       {/* Main Content Area */}
       <main>
-        {/* 2. Hero Section with Interactive 3-Card Deck */}
+        {/* 2. Hero Section */}
         <Hero
-          onOpenWalkthrough={() => setWalkthroughOpen(true)}
           onOpenDemo={() => setDemoOpen(true)}
         />
 
-        {/* 3. Why Traditional Spreadsheets Fail Your Margins (Shortened) */}
+        {/* 3. Stappenplan / How It Works */}
+        <HowItWorks
+          onOpenDemo={() => setDemoOpen(true)}
+        />
+
+        {/* 4. Why Traditional Spreadsheets Fail Your Margins */}
         <SpreadsheetVsCostCards />
 
-        {/* 4. Core Features with Visual Card Element (Shortened) */}
-        <FeaturesSection onOpenDemo={() => setDemoOpen(true)} />
+        {/* 5. Core Features (Visual Listing with Spacious Card Deck) */}
+        <FeaturesSection
+          onOpenDemo={() => setDemoOpen(true)}
+        />
 
-        {/* 5. Structured Overview */}
+        {/* 6. Structured Overview */}
         <AiSearchExtract />
 
-        {/* 6. FAQ Accordion */}
-        <FaqSection onOpenDemo={() => setDemoOpen(true)} />
+        {/* 7. FAQ Accordion */}
+        <FaqSection
+          onOpenDemo={() => setDemoOpen(true)}
+        />
       </main>
 
-      {/* 7. Footer */}
+      {/* 8. Footer */}
       <Footer
         onOpenDemo={() => setDemoOpen(true)}
       />
 
-      {/* Interactive Modals */}
+      {/* Interactive Modal (Book a Demo) */}
       <Modals
-        walkthroughOpen={walkthroughOpen}
         demoOpen={demoOpen}
-        onCloseWalkthrough={() => setWalkthroughOpen(false)}
         onCloseDemo={() => setDemoOpen(false)}
       />
     </div>

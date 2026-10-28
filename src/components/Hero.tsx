@@ -1,23 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import {
   ArrowRight,
-  Play,
   TrendingUp,
   Check,
 } from 'lucide-react';
 import { HERO_CARDS, CostCardItem } from '../data/content';
 
 interface HeroProps {
-  onOpenWalkthrough: () => void;
   onOpenDemo: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => {
-  // Ordered stack of cards: index 0 is front, index 1 is middle, index 2 is back
+export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
   const [cards, setCards] = useState<CostCardItem[]>(HERO_CARDS);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Auto-cycle cards every 4 seconds (pauses when user is actively hovering over deck)
   useEffect(() => {
     if (isHovered) return;
 
@@ -31,7 +27,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
     return () => clearInterval(timer);
   }, [isHovered]);
 
-  // Bring clicked card to front
   const bringToFront = (id: string) => {
     setCards((prev) => {
       const clicked = prev.find((c) => c.id === id);
@@ -52,62 +47,45 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
           
           {/* Left Column: Value Prop & CTAs */}
           <div className="lg:col-span-6 space-y-6 text-left z-10">
-            {/* Unboxed Metadata Header */}
-            <div className="flex items-center gap-2 text-xs font-semibold text-neutral-400">
-              <span className="text-[#FF5A5F] uppercase tracking-wider font-bold">Manufacturing &amp; SME Software</span>
-              <span aria-hidden="true">·</span>
-              <span>Dynamic Recipe Costing</span>
-            </div>
-
-            {/* H1 with Glowing Warm Sunset Gradient on "margins" */}
+            {/* H1 */}
             <h1 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-[1.12] text-balance">
-              Protect your{' '}
+              Bescherm je{' '}
               <span className="relative inline-block">
                 <span className="text-gradient-coral drop-shadow-[0_0_25px_rgba(255,90,95,0.45)]">
-                  margins
+                  marges
                 </span>
                 <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-gradient-to-r from-[#FF5A5F] via-[#FFAA40] to-transparent rounded-full opacity-80" />
               </span>{' '}
-              card by card.
+              kaart voor kaart.
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-neutral-300 font-normal leading-relaxed max-w-xl">
-              CostCards is dynamic costing and margin simulation software for manufacturing SMEs and producers. Replace spreadsheet chaos with connected BOM building blocks.
+              CostCards is dynamische kostprijs- en margesimulatiesoftware voor kmo-producenten. Vervang spreadsheetchaos door verbonden bouwstenen.
             </p>
 
-            {/* CTAs - Enforcing single primary Book a Demo CTA */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-1">
+            {/* CTA */}
+            <div className="pt-1">
               <button
                 type="button"
                 onClick={onOpenDemo}
-                className="relative group px-7 py-3.5 text-sm font-bold text-white bg-gradient-to-r from-[#FF5A5F] via-[#FA6B65] to-[#FFAA40] rounded-xl shadow-[0_4px_25px_rgba(255,90,95,0.4)] hover:shadow-[0_8px_35px_rgba(255,90,95,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer"
+                className="relative group px-8 py-4 text-sm font-bold text-white bg-gradient-to-r from-[#FF5A5F] via-[#FA6B65] to-[#FFAA40] rounded-xl shadow-[0_4px_25px_rgba(255,90,95,0.4)] hover:shadow-[0_8px_35px_rgba(255,90,95,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 inline-flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Book a Demo</span>
+                <span>Boek een Demo</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-              </button>
-
-              <button
-                type="button"
-                onClick={onOpenWalkthrough}
-                className="px-6 py-3.5 text-sm font-semibold text-neutral-200 hover:text-white bg-white/[0.05] hover:bg-white/[0.1] border border-white/10 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer backdrop-blur-sm"
-              >
-                <Play className="w-4 h-4 fill-current ml-0.5 text-[#FFAA40]" />
-                <span>Watch 2-Min Walkthrough</span>
               </button>
             </div>
 
-            {/* Key benefits as clean typography */}
+            {/* Key benefits */}
             <div className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-neutral-400 font-medium">
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> AI empowered</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> Real-time BOM sync</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> Instant margin simulation</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> AI-ondersteund</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> Real-time BOM synchronisatie</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> Directe margesimulatie</span>
             </div>
           </div>
 
-          {/* Right Column: Signature Fanned / Stacked 3-Card Deck */}
+          {/* Right Column: Stacked 3-Card Deck */}
           <div className="lg:col-span-6 relative flex flex-col items-center justify-center min-h-[490px] select-none">
-            {/* The Stacked Card Deck Container */}
             <div
               className="relative w-full max-w-[390px] h-[370px] cursor-pointer"
               onMouseEnter={() => setIsHovered(true)}
@@ -155,7 +133,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
                         : 'bg-[#18181F] text-white border border-[#2A2A35] shadow-[0_20px_50px_rgba(0,0,0,0.7)]'
                     }`}
                   >
-                    {/* Top Row: Category Badge & Status Pill */}
+                    {/* Top Row */}
                     <div className="flex items-center justify-between mb-4">
                       <span
                         className={`text-[11px] font-extrabold tracking-wider uppercase ${
@@ -169,7 +147,6 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
                         {card.category}
                       </span>
 
-                      {/* Status indicator */}
                       <div className="flex items-center gap-1.5">
                         <span
                           className={`w-2 h-2 rounded-full ${
@@ -194,7 +171,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
                       </div>
                     </div>
 
-                    {/* Card Title & Subtitle */}
+                    {/* Title */}
                     <div className="mb-4">
                       <h3
                         className={`text-xl font-bold tracking-tight leading-tight ${
@@ -216,7 +193,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
                       </p>
                     </div>
 
-                    {/* Rate Highlight Box */}
+                    {/* Rate Box */}
                     <div
                       className={`p-3.5 rounded-xl flex items-center justify-between mb-4 ${
                         isWhiteCard
@@ -235,7 +212,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
                             : 'text-neutral-400'
                         }`}
                       >
-                        RATE SPECIFICATION
+                        TARIEFSPECIFICATIE
                       </span>
                       <div className="text-right">
                         <span
@@ -259,7 +236,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
                       </div>
                     </div>
 
-                    {/* 4 Specs Key-Value Grid */}
+                    {/* Specs Grid */}
                     <div className="grid grid-cols-2 gap-2 text-xs">
                       {card.specs.map((spec, sIdx) => (
                         <div
@@ -298,22 +275,22 @@ export const Hero: React.FC<HeroProps> = ({ onOpenWalkthrough, onOpenDemo }) => 
                       ))}
                     </div>
 
-                    {/* Bottom Micro-Alert / Margin Impact */}
+                    {/* Bottom Alert */}
                     <div className="mt-4 pt-3 border-t border-current/10 flex items-center justify-between text-[11px]">
                       <span className="font-medium truncate opacity-85 flex items-center gap-1.5">
                         <TrendingUp className="w-3.5 h-3.5 shrink-0" />
                         {card.marginImpact}
                       </span>
                       <span className="text-[10px] uppercase font-bold tracking-widest opacity-60">
-                        CLICK FRONT
+                        KLIK KAART
                       </span>
                     </div>
 
-                    {/* Simulation tooltip when hovering on front card */}
+                    {/* Tooltip */}
                     {index === 0 && (
                       <div className="absolute -bottom-3 right-6 bg-[#0A0A0C] text-white border border-white/20 text-[10px] font-mono px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F] animate-ping" />
-                        <span>LIVE BOM SYNC ACTIVE</span>
+                        <span>LIVE BOM SYNC ACTIEF</span>
                       </div>
                     )}
                   </div>

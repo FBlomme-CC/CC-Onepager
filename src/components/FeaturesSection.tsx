@@ -3,37 +3,31 @@ import {
   Layers,
   Handshake,
   BarChart3,
-  CheckCircle2,
-  AlertTriangle,
-  ShieldCheck,
-  Zap,
+  Bot,
   Package,
   Users,
   Factory,
-  Sliders,
-  Sparkles,
-  Bot,
-  Calendar,
-  Check,
+  Zap,
+  AlertTriangle,
   ArrowRight,
+  CheckCircle2,
 } from 'lucide-react';
 
 interface FeaturesSectionProps {
-  onOpenDemo?: () => void;
+  onOpenDemo: () => void;
 }
 
 export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) => {
-  // 8 Modular Cost Cards definitions for a cleaner compact deck
+  // 6 Modular Cost Cards definitions with spacious dimensions
   const COST_CARDS = [
     {
       id: 'rawMaterial',
       num: '01',
       category: 'RAW MATERIAL',
       title: 'Kraftboard 350g',
-      specs: 'Yield 94.2%',
+      specs: 'Yield 94.2% · FSC Mix',
       cost: 1.45,
-      rotation: '-rotate-[12deg]',
-      yOffset: 'translate-y-4',
+      unit: '/ kg',
       theme: 'white',
       icon: Package,
     },
@@ -42,10 +36,9 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
       num: '02',
       category: 'DIRECT LABOUR',
       title: 'Operator Setup',
-      specs: '12 min shift',
+      specs: '12 min shift cycle',
       cost: 0.65,
-      rotation: '-rotate-[8deg]',
-      yOffset: 'translate-y-2',
+      unit: '/ pass',
       theme: 'coral',
       icon: Users,
     },
@@ -53,23 +46,21 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
       id: 'machine',
       num: '03',
       category: 'MACHINE RATE',
-      title: 'Heidelberg XL',
-      specs: 'Press pass',
+      title: 'Heidelberg XL Press',
+      specs: 'Press hourly pass',
       cost: 0.85,
-      rotation: '-rotate-[4deg]',
-      yOffset: 'translate-y-1',
+      unit: '/ sheet',
       theme: 'slate',
       icon: Factory,
     },
     {
       id: 'energy',
       num: '04',
-      category: 'ENERGY RATE',
-      title: 'UV Curing Load',
-      specs: '0.42 kWh peak',
+      category: 'ENERGY & POWER',
+      title: 'UV Drying Pass',
+      specs: '0.42 kWh peak load',
       cost: 0.28,
-      rotation: 'rotate-[0deg]',
-      yOffset: 'translate-y-0',
+      unit: '/ kWh',
       theme: 'amber',
       icon: Zap,
     },
@@ -78,28 +69,26 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
       num: '05',
       category: 'PACKAGING',
       title: 'Pallet Outer Box',
-      specs: 'Corrugated',
+      specs: 'Corrugated 3-ply',
       cost: 0.32,
-      rotation: 'rotate-[4deg]',
-      yOffset: 'translate-y-1',
+      unit: '/ unit',
       theme: 'sky',
       icon: Package,
     },
     {
       id: 'scrap',
       num: '06',
-      category: 'SCRAP BUFFER',
+      category: 'SCRAP & WASTE',
       title: '4.8% Trim Loss',
-      specs: 'Die-cut allow',
+      specs: 'Die-cut allowance',
       cost: 0.12,
-      rotation: 'rotate-[8deg]',
-      yOffset: 'translate-y-2',
+      unit: '/ margin',
       theme: 'rose',
       icon: AlertTriangle,
     },
   ];
 
-  // --- 1. COST CARDS STACKER STATE ---
+  // Active cards toggling
   const [activeCards, setActiveCards] = useState<Record<string, boolean>>({
     rawMaterial: true,
     labour: true,
@@ -109,8 +98,8 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
     scrap: true,
   });
 
-  const toggleCard = (cardId: string) => {
-    setActiveCards((prev) => ({ ...prev, [cardId]: !prev[cardId] }));
+  const toggleCard = (id: string) => {
+    setActiveCards((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
   const totalUnitCost = COST_CARDS.reduce((acc, card) => {
@@ -119,40 +108,74 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
 
   const activeCount = Object.values(activeCards).filter(Boolean).length;
 
-  // --- 2. NEGOTIATOR STATE ---
-  const [dealVolume, setDealVolume] = useState<number>(15000);
-  const [clientDiscount, setClientDiscount] = useState<number>(8);
-  const baseSalesPrice = 6.80;
-  const discountedPrice = baseSalesPrice * (1 - clientDiscount / 100);
-  const dealMarginPercent = totalUnitCost > 0 ? ((discountedPrice - totalUnitCost) / discountedPrice) * 100 : 0;
-  const isHealthyMargin = dealMarginPercent >= 30;
+  // The 4 Core Platform Features for the Visual Listing
+  const FEATURE_LIST = [
+    {
+      id: 'feature-01',
+      num: '01',
+      title: 'Modulaire builder',
+      category: 'VISUELE BOM ARCHITECTUUR',
+      description: 'Stapel grondstoffen, machinetijden, arbeid en opslag als fysieke kaarten. Maak complexe samengestelde producten in enkele seconden inzichtelijk.',
+      highlights: ['Atomaire kaartstructuur', 'Real-time BOM herberekening', 'Multi-level afval- & scrapfaktoren'],
+      icon: Layers,
+      accentColor: 'text-[#FF5A5F]',
+      badgeBg: 'bg-[#FF5A5F]/15 border-[#FF5A5F]/30 text-[#FF5A5F]',
+    },
+    {
+      id: 'feature-02',
+      num: '02',
+      title: 'De Onderhandelaar',
+      category: 'COMMERCIËLE MARGEBEWAKING',
+      description: 'Laat je salesteam live offertes testen en kortingspercentages simuleren met harde EBITDA-bewakers die verlieslatende offertes direct blokkeren.',
+      highlights: ['Real-time volumestaffels', 'Color-coded margedrempels', '1-Klik PDF-offertes'],
+      icon: Handshake,
+      accentColor: 'text-[#FFAA40]',
+      badgeBg: 'bg-[#FFAA40]/15 border-[#FFAA40]/30 text-[#FFAA40]',
+    },
+    {
+      id: 'feature-03',
+      num: '03',
+      title: 'Portfolio Analytics & Inzichten',
+      category: 'STRATEGISCHE VISIBILITEIT',
+      description: 'Krijg een panoramisch overzicht over al je afgewerkte SKUs. Detecteer sluipende marge-erosie bij klanten voordat facturen uitsturen.',
+      highlights: ['Gevoeligheidsanalyse voor grondstoffen', 'Detectie van verlieslatende accounts', 'Bi-directionele ERP-koppeling'],
+      icon: BarChart3,
+      accentColor: 'text-sky-400',
+      badgeBg: 'bg-sky-500/15 border-sky-500/30 text-sky-400',
+    },
+    {
+      id: 'feature-[#04]',
+      num: '04',
+      title: 'AI Simulatie & Budget Forecast',
+      category: 'VOORSPELLENDE INTELLIGENTIE',
+      description: 'Simuleer plotse marktshocks (zoals +8% staal of +25% energie) over meer dan 400 producten. Genereer een volgend-jaar budget in seconden.',
+      highlights: ['1.2s Portfolio-brede AI scan', 'Volgend-jaar indexatie in 1 klik', 'Automatische toeslagberekeningen'],
+      icon: Bot,
+      accentColor: 'text-emerald-400',
+      badgeBg: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400',
+    },
+  ];
 
-  // --- 3. ANALYTICS STATE ---
-  const [selectedScenario, setSelectedScenario] = useState<'energy' | 'materials' | 'labor'>('materials');
-
-  // --- 4. AI SIMULATION STATE ---
-  const [activeShock, setActiveShock] = useState<'steel' | 'energy' | 'wages'>('steel');
-
-  const getCardThemeClasses = (theme: string, isActive: boolean) => {
+  const getThemeClasses = (theme: string, isActive: boolean) => {
     if (!isActive) {
-      return 'bg-[#14141E]/80 text-neutral-500 border border-white/10 opacity-35 scale-90 z-0';
+      return 'bg-[#12121B] text-neutral-500 border border-white/10 opacity-40 scale-95';
     }
 
     switch (theme) {
       case 'white':
-        return 'bg-white text-[#0A0A0C] border-2 border-white shadow-xl z-20';
+        return 'bg-white text-[#0A0A0C] border-2 border-white shadow-2xl';
       case 'coral':
-        return 'bg-gradient-to-b from-[#FA6B65] to-[#E84E4E] text-white border-2 border-[#FF8A85] shadow-xl z-20';
+        return 'bg-gradient-to-br from-[#FA6B65] to-[#E84E4E] text-white border-2 border-[#FF8A85] shadow-2xl';
       case 'slate':
-        return 'bg-[#1C1C28] text-white border-2 border-[#38384E] shadow-xl z-10';
+        return 'bg-[#1C1C28] text-white border-2 border-[#38384E] shadow-2xl';
       case 'amber':
-        return 'bg-[#2B2014] text-white border-2 border-[#FFAA40] shadow-xl z-10';
+        return 'bg-[#2B2014] text-white border-2 border-[#FFAA40] shadow-2xl';
       case 'sky':
-        return 'bg-[#122333] text-white border-2 border-sky-400 shadow-xl z-10';
+        return 'bg-[#122333] text-white border-2 border-sky-400 shadow-2xl';
       case 'rose':
-        return 'bg-[#2C151B] text-white border-2 border-rose-400 shadow-xl z-10';
+        return 'bg-[#2C151B] text-white border-2 border-rose-400 shadow-2xl';
       default:
-        return 'bg-[#181822] text-white border-white/20 z-10';
+        return 'bg-[#181822] text-white border-white/20 shadow-2xl';
     }
   };
 
@@ -160,46 +183,54 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
     <section id="features" className="py-16 bg-[#0A0A0C] relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
-        {/* Minimalist Section Header */}
+        {/* Section Header */}
         <div className="max-w-2xl mx-auto text-center space-y-3 mb-12">
           <div className="text-xs font-mono uppercase tracking-widest text-[#FF5A5F] font-bold">
-            PLATFORM CAPABILITIES
+            INTERACTIEF OVERZICHT
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            4 Core Engines in One Clean System
+            De CostCards Builder in Actie
           </h2>
           <p className="text-neutral-400 text-sm leading-relaxed">
-            Modular BOM recipe building blocks, real-time EBITDA negotiator, portfolio analytics, and AI inflation simulations.
+            Klik op onderstaande kaarten om ze in- of uit te schakelen en zie hoe de berekende kostprijs direct reageert.
           </p>
         </div>
 
-        {/* ============================================================ */}
-        {/* FEATURE 1: MODULAR COST CARDS VISUAL DECK */}
-        {/* ============================================================ */}
-        <div className="mb-12 bg-[#121218] border border-white/10 rounded-2xl p-6 sm:p-8 relative overflow-hidden shadow-xl">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+        {/* GROTERE INTERACTIEVE KAARTEN CONTAINER - Ruim & overzichtelijk op alle schermen */}
+        <div className="mb-16 bg-[#121218] border border-white/10 rounded-2xl p-6 sm:p-10 shadow-2xl space-y-8">
+          
+          {/* Header Bar within Card Stacker */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
             <div>
-              <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#FF5A5F] uppercase">
-                <Layers className="w-4 h-4" />
-                <span>Feature 01 · Visual BOM Deck</span>
-              </div>
-              <h3 className="text-xl font-extrabold text-white mt-1">
-                Modular Cost Cards: Physical Building Blocks
+              <span className="text-xs font-mono font-bold text-[#FF5A5F] uppercase tracking-wider block">
+                INTERACTIEVE DEMO
+              </span>
+              <h3 className="text-lg font-bold text-white mt-0.5">
+                Geselecteerd Product Deck: Custom Printed Verpakking
               </h3>
             </div>
 
-            <div className="flex items-center gap-3 bg-[#181824] px-4 py-2 rounded-xl border border-white/10 shrink-0">
-              <span className="text-xs text-neutral-400">Calculated Unit Cost:</span>
-              <span className="text-xl font-mono font-extrabold text-[#FFAA40]">
-                €{totalUnitCost.toFixed(2)}
-              </span>
-              <span className="text-xs text-neutral-400 font-mono">({activeCount} cards)</span>
+            <div className="flex items-center gap-4 bg-[#181824] px-5 py-3 rounded-xl border border-white/10 shrink-0">
+              <div className="text-left">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">
+                  BEREKENDE EENHEIDSKOST
+                </span>
+                <span className="text-xs text-neutral-400 font-mono">
+                  {activeCount} van 6 kaarten actief
+                </span>
+              </div>
+              <div className="pl-4 border-l border-white/10">
+                <span className="text-2xl sm:text-3xl font-extrabold font-mono text-[#FFAA40]">
+                  €{totalUnitCost.toFixed(2)}
+                </span>
+                <span className="text-xs text-neutral-400 ml-1">/ st</span>
+              </div>
             </div>
           </div>
 
-          {/* Interactive Card Fan Container */}
-          <div className="py-8 select-none">
-            <div className="flex items-center justify-center -space-x-6 sm:-space-x-10 hover:-space-x-4 transition-all duration-300 px-4 overflow-x-auto no-scrollbar">
+          {/* GROTERE KAARTEN FAN CONTAINER - Duidelijk zichtbaar, ruime kaarten */}
+          <div className="py-6 overflow-x-auto no-scrollbar">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 min-w-[700px] xl:min-w-0">
               {COST_CARDS.map((card) => {
                 const isActive = activeCards[card.id];
                 const IconComp = card.icon;
@@ -209,212 +240,135 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
                     key={card.id}
                     type="button"
                     onClick={() => toggleCard(card.id)}
-                    className={`relative w-36 sm:w-44 h-52 sm:h-56 rounded-xl p-4 text-left transition-all duration-300 cursor-pointer flex flex-col justify-between shrink-0 ${card.rotation} ${card.yOffset} hover:rotate-0 hover:-translate-y-4 hover:scale-105 hover:z-30 ${getCardThemeClasses(
+                    className={`relative p-5 rounded-2xl text-left transition-all duration-300 cursor-pointer flex flex-col justify-between h-64 sm:h-72 ${getThemeClasses(
                       card.theme,
                       isActive
-                    )}`}
+                    )} hover:scale-[1.03] active:scale-[0.98]`}
                   >
-                    <div className="flex items-center justify-between text-xs font-mono font-bold">
-                      <span>{card.num}</span>
-                      <IconComp className="w-3.5 h-3.5" />
+                    {/* Top Row */}
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-mono font-black opacity-90">{card.num}</span>
+                      <IconComp className="w-4 h-4 opacity-90" />
                     </div>
 
-                    <div>
-                      <span className="text-[9px] font-bold uppercase tracking-wider opacity-75 block truncate">
+                    {/* Middle Info */}
+                    <div className="space-y-1.5 my-auto">
+                      <span className="text-[10px] font-bold uppercase tracking-wider opacity-80 block truncate">
                         {card.category}
                       </span>
-                      <div className="font-extrabold text-xs sm:text-sm truncate mt-0.5">
+                      <div className="font-extrabold text-sm sm:text-base leading-tight">
                         {card.title}
                       </div>
-                      <div className="text-[10px] opacity-75 truncate">
+                      <div className="text-xs opacity-75 leading-tight">
                         {card.specs}
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-current/15 flex justify-between items-baseline text-xs">
-                      <span className="text-[9px] uppercase font-bold opacity-70">RATE</span>
-                      <span className="font-mono font-black">€{card.cost.toFixed(2)}</span>
+                    {/* Bottom Cost Rate */}
+                    <div className="pt-3 border-t border-current/15 flex items-baseline justify-between">
+                      <span className="text-[10px] uppercase font-bold opacity-70">TARIEF</span>
+                      <div className="text-right">
+                        <span className="font-mono text-base sm:text-lg font-black">
+                          €{card.cost.toFixed(2)}
+                        </span>
+                        <span className="text-[10px] opacity-75 block">{card.unit}</span>
+                      </div>
+                    </div>
+
+                    {/* Active Badge */}
+                    <div className="absolute top-2.5 right-2.5">
+                      <span
+                        className={`text-[9px] font-mono font-extrabold uppercase px-2 py-0.5 rounded-full ${
+                          isActive
+                            ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
+                            : 'bg-black/40 text-neutral-400'
+                        }`}
+                      >
+                        {isActive ? 'AAN' : 'UIT'}
+                      </span>
                     </div>
                   </button>
                 );
               })}
             </div>
-            <p className="text-center text-xs text-neutral-400 mt-4">
-              Click cards above to include/exclude them from the dynamic BOM calculations in real time.
-            </p>
           </div>
+
+          <div className="text-center text-xs text-neutral-400 flex items-center justify-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>Klik op een kaart om het effect op de totale eenheidskost direct te zien.</span>
+          </div>
+
         </div>
 
         {/* ============================================================ */}
-        {/* FEATURE 2 & 3 GRID: NEGOTIATOR + ANALYTICS */}
+        {/* VISUELE OPLIJSTING VAN DE 4 FEATURES */}
         {/* ============================================================ */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-          
-          {/* FEATURE 2: THE NEGOTIATOR */}
-          <div className="bg-[#121218] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-6">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold uppercase text-[#FF5A5F] flex items-center gap-1.5">
-                  <Handshake className="w-4 h-4" />
-                  Feature 02 · The Negotiator
-                </span>
-                <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                  Margin Guardrails
-                </span>
-              </div>
-              <h3 className="text-xl font-extrabold text-white">Live Deal Discounting & EBITDA Protection</h3>
-              <p className="text-xs text-neutral-300 leading-relaxed">
-                Sales reps test discount percentages live during client calls. Built-in threshold locks prevent quoting below target EBITDA limits.
-              </p>
+        <div className="space-y-6">
+          <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
+            <div className="text-xs font-mono uppercase tracking-widest text-[#FFAA40] font-bold">
+              KERNFUNCTIONALITEITEN
             </div>
+            <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              4 Pijlers van CostCards
+            </h3>
+          </div>
 
-            {/* Mini Simulator */}
-            <div className="bg-[#171722] p-4 rounded-xl border border-white/10 space-y-3 text-xs">
-              <div className="flex justify-between items-center">
-                <span className="text-neutral-300">Client Volume Discount:</span>
-                <span className="font-mono font-bold text-[#FFAA40]">{clientDiscount}%</span>
-              </div>
-              <input
-                type="range"
-                min="0"
-                max="25"
-                value={clientDiscount}
-                onChange={(e) => setClientDiscount(Number(e.target.value))}
-                className="w-full accent-[#FF5A5F] cursor-pointer"
-              />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {FEATURE_LIST.map((feat) => {
+              const IconComp = feat.icon;
+              return (
+                <div
+                  key={feat.id}
+                  className="bg-[#121217] border border-white/10 hover:border-white/20 rounded-2xl p-6 flex flex-col justify-between space-y-5 transition-all shadow-xl"
+                >
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${feat.badgeBg}`}>
+                        {feat.category}
+                      </span>
+                      <span className="font-mono text-sm font-bold text-neutral-500">
+                        {feat.num}
+                      </span>
+                    </div>
 
-              <div className={`p-3 rounded-lg border flex items-center justify-between ${
-                isHealthyMargin
-                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-300'
-                  : 'bg-red-500/10 border-red-500/30 text-red-300'
-              }`}>
-                <div className="flex items-center gap-2 font-bold">
-                  {isHealthyMargin ? <ShieldCheck className="w-4 h-4" /> : <AlertTriangle className="w-4 h-4" />}
-                  <span>{isHealthyMargin ? 'Margin Approved' : 'EBITDA Floor Breached'}</span>
+                    <h4 className="text-xl font-bold text-white flex items-center gap-2.5">
+                      <IconComp className={`w-5 h-5 ${feat.accentColor}`} />
+                      {feat.title}
+                    </h4>
+
+                    <p className="text-xs text-neutral-300 leading-relaxed">
+                      {feat.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-3 border-t border-white/5 space-y-2">
+                    <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 block">
+                      BELANGRIJKSTE VOORDELEN:
+                    </span>
+                    <ul className="space-y-1.5 text-xs text-neutral-200">
+                      {feat.highlights.map((h, hIdx) => (
+                        <li key={hIdx} className="flex items-center gap-2">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
-                <span className="font-mono font-bold">{dealMarginPercent.toFixed(1)}% Gross</span>
-              </div>
-            </div>
+              );
+            })}
           </div>
 
-          {/* FEATURE 3: ANALYTICS & INSIGHTS */}
-          <div className="bg-[#121218] border border-white/10 rounded-2xl p-6 flex flex-col justify-between space-y-6">
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-mono font-bold uppercase text-[#FFAA40] flex items-center gap-1.5">
-                  <BarChart3 className="w-4 h-4" />
-                  Feature 03 · Analytics
-                </span>
-                <span className="text-[10px] font-mono text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
-                  Portfolio Audit
-                </span>
-              </div>
-              <h3 className="text-xl font-extrabold text-white">Macro Price Shock & Margin Erosion</h3>
-              <p className="text-xs text-neutral-300 leading-relaxed">
-                Detect margin erosion across hundreds of finished product SKUs before issuing quarterly client renewals.
-              </p>
-            </div>
-
-            {/* Interactive Macro Shock Selector */}
-            <div className="bg-[#171722] p-4 rounded-xl border border-white/10 space-y-3 text-xs">
-              <div className="grid grid-cols-3 gap-2">
-                <button
-                  type="button"
-                  onClick={() => setSelectedScenario('materials')}
-                  className={`p-2 rounded-lg text-center font-bold cursor-pointer transition-all ${
-                    selectedScenario === 'materials'
-                      ? 'bg-[#FF5A5F] text-white'
-                      : 'bg-white/5 text-neutral-300'
-                  }`}
-                >
-                  📦 Paper +15%
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedScenario('energy')}
-                  className={`p-2 rounded-lg text-center font-bold cursor-pointer transition-all ${
-                    selectedScenario === 'energy'
-                      ? 'bg-[#FFAA40] text-black'
-                      : 'bg-white/5 text-neutral-300'
-                  }`}
-                >
-                  ⚡ Energy +35%
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setSelectedScenario('labor')}
-                  className={`p-2 rounded-lg text-center font-bold cursor-pointer transition-all ${
-                    selectedScenario === 'labor'
-                      ? 'bg-sky-400 text-black'
-                      : 'bg-white/5 text-neutral-300'
-                  }`}
-                >
-                  👷 Wages +6%
-                </button>
-              </div>
-
-              <div className="p-3 rounded-lg bg-[#0F0F16] border border-white/10 flex items-center justify-between text-xs">
-                <span className="text-neutral-400">Net Portfolio EBITDA Shift:</span>
-                <span className="font-mono font-bold text-red-400">
-                  {selectedScenario === 'materials' ? '-4.1%' : selectedScenario === 'energy' ? '-2.8%' : '-1.4%'}
-                </span>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* ============================================================ */}
-        {/* FEATURE 4: AI SIMULATION & FORECASTING */}
-        {/* ============================================================ */}
-        <div className="bg-[#121218] border border-white/10 rounded-2xl p-6 sm:p-8 space-y-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/10 pb-4">
-            <div>
-              <div className="flex items-center gap-2 text-xs font-mono font-bold text-[#FF5A5F] uppercase">
-                <Bot className="w-4 h-4" />
-                <span>Feature 04 · AI Simulation &amp; Forecasting</span>
-              </div>
-              <h3 className="text-xl font-extrabold text-white mt-1">
-                AI Portfolio Scan &amp; Next-Year Budget Forecast
-              </h3>
-            </div>
-
-            {onOpenDemo && (
-              <button
-                type="button"
-                onClick={onOpenDemo}
-                className="px-4 py-2 text-xs font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-lg cursor-pointer flex items-center gap-1.5 shrink-0"
-              >
-                <span>Book a Demo</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </button>
-            )}
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
-            <div className="p-4 rounded-xl bg-[#171722] border border-white/10 space-y-2">
-              <span className="text-[10px] font-mono text-[#FF5A5F] uppercase font-bold block">01. Instant Scan</span>
-              <h4 className="font-bold text-white">1.2s Full Catalog Analysis</h4>
-              <p className="text-neutral-400 leading-relaxed">
-                Scans 480+ finished products instantly when geopolitical material spikes occur.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-[#171722] border border-white/10 space-y-2">
-              <span className="text-[10px] font-mono text-[#FFAA40] uppercase font-bold block">02. Auto Defense</span>
-              <h4 className="font-bold text-white">Suggested Contract Surcharges</h4>
-              <p className="text-neutral-400 leading-relaxed">
-                Generates exact component pass-through rates to defend net EBITDA baseline.
-              </p>
-            </div>
-
-            <div className="p-4 rounded-xl bg-[#171722] border border-white/10 space-y-2">
-              <span className="text-[10px] font-mono text-emerald-400 uppercase font-bold block">03. Annual Forecast</span>
-              <h4 className="font-bold text-white">Next Year&apos;s Budget in Seconds</h4>
-              <p className="text-neutral-400 leading-relaxed">
-                Replaces 3 weeks of manual Excel indexation with card-level forecasting.
-              </p>
-            </div>
+          {/* Bottom Action Button */}
+          <div className="pt-8 text-center">
+            <button
+              type="button"
+              onClick={onOpenDemo}
+              className="px-6 py-3.5 text-xs font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer inline-flex items-center gap-2"
+            >
+              <span>Vraag een Demonstratie Aan</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
 

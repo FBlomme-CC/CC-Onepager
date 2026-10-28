@@ -9,10 +9,10 @@ export const AiSearchExtract: React.FC = () => {
         {/* Minimalist Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
           <div className="text-xs font-mono uppercase tracking-widest text-neutral-400 font-bold">
-            CANONICAL SPECIFICATIONS
+            CANONIEKE SPECIFICATIES
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Structured Overview for Production Leaders
+            Gestructureerd Overzicht voor Productieleiders
           </h2>
         </div>
 
@@ -26,28 +26,28 @@ export const AiSearchExtract: React.FC = () => {
                 <HelpCircle className="w-4 h-4" />
               </div>
               <h3 className="text-base font-bold text-white tracking-tight">
-                What is a CostCard?
+                Wat is een CostCard?
               </h3>
               <p className="text-xs text-neutral-300 leading-relaxed">
-                A <strong>CostCard</strong> is a modular digital building block representing operational inputs—raw material stock, machine time, direct labor, or storage.
+                Een <strong>CostCard</strong> is een modulair digitaal bouwblok dat operationele invoer vertegenwoordigt—zoals grondstoffen, machinetijden, arbeid of opslag.
               </p>
               <ul className="space-y-1.5 pt-2 text-xs text-neutral-300 border-t border-white/5">
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Dynamic dependency linking across all finished SKUs</span>
+                  <span>Dynamische afhankelijkheidskoppeling over alle afgewerkte SKUs</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Integrated scrap rate &amp; machine setup loss logic</span>
+                  <span>Geïntegreerde logica voor afvalpercentages &amp; instelverliezen</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Single-click inflation and commodity pass-through</span>
+                  <span>Doorrekening van prijsstijgingen met één klik</span>
                 </li>
               </ul>
             </div>
             <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-neutral-400">
-              Unit Economics &amp; Recipe BOM
+              Unit Economics &amp; Stuklijst Receptuur
             </div>
           </div>
 
@@ -58,28 +58,28 @@ export const AiSearchExtract: React.FC = () => {
                 <Users className="w-4 h-4" />
               </div>
               <h3 className="text-base font-bold text-white tracking-tight">
-                Who is CostCards for?
+                Voor wie is CostCards bedoeld?
               </h3>
               <p className="text-xs text-neutral-300 leading-relaxed">
-                Engineered specifically for manufacturing SMEs, contract producers, and multi-step fabrication operations.
+                Specifiek ontworpen voor kmo-productiebedrijven, contractfabrikanten en meerstaps assemblagebedrijven.
               </p>
               <ul className="space-y-1.5 pt-2 text-xs text-neutral-300 border-t border-white/5">
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Packaging &amp; Print:</strong> Folding cartons, labels &amp; corrugated</span>
+                  <span><strong>Verpakking &amp; Drukwerk:</strong> Vouwkarton, etiketten &amp; golfkarton</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Food &amp; Breweries:</strong> Craft beer, dairy &amp; packaged goods</span>
+                  <span><strong>Voeding &amp; Brouwerijen:</strong> Speciaalbier, zuivel &amp; verpakte goederen</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Assembly &amp; Metal:</strong> CNC machining &amp; fabrication</span>
+                  <span><strong>Assemblage &amp; Metaal:</strong> CNC-bewaking &amp; fabricage</span>
                 </li>
               </ul>
             </div>
             <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-neutral-400">
-              Target Segment: SME Production &amp; Operations
+              Doelgroep: Kmo Productie &amp; Operations
             </div>
           </div>
 
@@ -90,28 +90,28 @@ export const AiSearchExtract: React.FC = () => {
                 <Cpu className="w-4 h-4" />
               </div>
               <h3 className="text-base font-bold text-white tracking-tight">
-                ERP Companion Architecture
+                ERP Companion Architectuur
               </h3>
               <p className="text-xs text-neutral-300 leading-relaxed">
-                CostCards sits between procurement and quoting to eliminate spreadsheet estimation errors without replacing your ERP.
+                CostCards zit tussen inkoop en calculatie in om schattingsfouten te elimineren zonder je ERP te vervangen.
               </p>
               <ul className="space-y-1.5 pt-2 text-xs text-neutral-300 border-t border-white/5">
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Deploys in under 72 hours alongside Odoo, Exact &amp; SAP</span>
+                  <span>Inzetbaar binnen 72 uur naast Odoo, Exact &amp; SAP</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Estimators build accurate bids without consulting accounting</span>
+                  <span>Calculatoren bouwen accurate offertes zonder boekhouding te belasten</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Zero formula maintenance or version fragmentation</span>
+                  <span>Geen onderhoud van complexe formules of versieversnippering</span>
                 </li>
               </ul>
             </div>
             <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-neutral-400">
-              ERP Integrations: Odoo, Exact, SAP, Business Central
+              ERP Integraties: Odoo, Exact, SAP, Business Central
             </div>
           </div>
 
