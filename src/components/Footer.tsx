@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, ShieldCheck, Lock, CheckCircle2, Loader2 } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Lock, CheckCircle2, Mail, ExternalLink } from 'lucide-react';
 
 interface FooterProps {
   onOpenDemo: () => void;
@@ -8,37 +8,34 @@ interface FooterProps {
 export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [activeMailtoUrl, setActiveMailtoUrl] = useState('');
   const [error, setError] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
       setError('Vul een geldig zakelijk e-mailadres in.');
       return;
     }
     setError('');
-    setIsSubmitting(true);
 
-    try {
-      const response = await fetch('/api/book-demo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, company: 'Via Footer Formulier' }),
-      });
+    const recipient = 'info@costcards.io';
+    const subject = `Demo Aanvraag via Footer: ${email}`;
+    const body = `Beste CostCards Team,
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || 'Er ging iets mis bij het versturen.');
-      }
+Hierbij vraag ik graag een demo aan.
 
-      setSubmitted(true);
-    } catch (err: any) {
-      console.error('Footer form submission error:', err);
-      setError(err.message || 'Er is een fout opgetreden.');
-    } finally {
-      setIsSubmitting(false);
-    }
+Mijn e-mailadres: ${email}
+
+Met vriendelijke groet,
+${email}`;
+
+    const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    setActiveMailtoUrl(mailto);
+    setSubmitted(true);
+
+    // Trigger default email app
+    window.location.href = mailto;
   };
 
   return (
@@ -62,9 +59,9 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
           {/* Quick Demo Request Form */}
           <div className="max-w-md mx-auto pt-2">
             {submitted ? (
-              <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs flex items-center justify-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Bedankt! Je aanvraag is verzonden naar info@costcards.io. Wij nemen snel contact op via {email}.</span>
+              <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-sm text-center flex items-center justify-center gap-2 font-bold">
+                <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
+                <span>Bedankt voor je aanvraag.</span>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-2">
@@ -81,22 +78,15 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
                   />
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="px-5 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] hover:opacity-95 transition-opacity flex items-center justify-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-[#FF5A5F]/20 disabled:opacity-50"
+                    className="px-5 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] hover:opacity-95 transition-opacity flex items-center justify-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-[#FF5A5F]/20"
                   >
-                    {isSubmitting ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : (
-                      <>
-                        <span>Vraag Demo Aan</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </>
-                    )}
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Vraag Demo Aan via E-mail</span>
                   </button>
                 </div>
                 {error && <p className="text-xs text-red-400 text-left pl-1">{error}</p>}
                 <p className="text-[11px] text-neutral-400">
-                  1-op-1 sessie · Geen enkele verplichting
+                  Opent je e-mailclient met alle gegevens voor info@costcards.io · Geen verplichting
                 </p>
               </form>
             )}
@@ -176,7 +166,7 @@ export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
 
         </div>
 
-        {/* Bottom Bar with required Blooom Consultancy BV backlink */}
+        {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
           <div>
             &copy; {new Date().getFullYear()} CostCards (costcards.io). Alle rechten voorbehouden.

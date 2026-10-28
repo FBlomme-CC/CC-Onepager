@@ -4,7 +4,8 @@ import {
   CheckCircle2,
   Calendar,
   ArrowRight,
-  Loader2,
+  Mail,
+  ExternalLink,
 } from 'lucide-react';
 
 interface ModalsProps {
@@ -24,39 +25,39 @@ export const Modals: React.FC<ModalsProps> = ({
     industry: 'Verpakking & Drukwerk',
     preferredTime: 'Ochtend (09:00 - 12:00 CET)',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [demoSubmitted, setDemoSubmitted] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [activeMailtoUrl, setActiveMailtoUrl] = useState('');
 
-  const handleDemoSubmit = async (e: React.FormEvent) => {
+  const generateMailto = (data: typeof demoForm) => {
+    const recipient = 'info@costcards.io';
+    const subject = `Demo Aanvraag: ${data.company || data.name || 'CostCards.io'}`;
+    const body = `Beste CostCards Team,
+
+Hierbij vraag ik graag een 1-op-1 demo aan.
+
+Mijn gegevens:
+----------------------------------------
+Naam: ${data.name || 'Niet opgegeven'}
+E-mailadres: ${data.email || 'Niet opgegeven'}
+Bedrijfsnaam: ${data.company || 'Niet opgegeven'}
+Industriesegment: ${data.industry || 'Niet opgegeven'}
+Voorkeurstijdslot: ${data.preferredTime || 'Niet opgegeven'}
+----------------------------------------
+
+Met vriendelijke groet,
+${data.name || data.company || 'Aanvrager'}`;
+
+    return `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  const handleDemoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!demoForm.email || !demoForm.email.includes('@')) {
-      setErrorMsg('Vul een geldig e-mailadres in.');
-      return;
-    }
+    const mailto = generateMailto(demoForm);
+    setActiveMailtoUrl(mailto);
+    setDemoSubmitted(true);
 
-    setIsSubmitting(true);
-    setErrorMsg('');
-
-    try {
-      const response = await fetch('/api/book-demo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(demoForm),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Er is een fout opgetreden.');
-      }
-
-      setDemoSubmitted(true);
-    } catch (err: any) {
-      console.error('Fout bij versturen demo aanvraag:', err);
-      setErrorMsg(err.message || 'Er is een fout opgetreden bij het verzenden van de aanvraag.');
-    } finally {
-      setIsSubmitting(false);
-    }
+    // Trigger user's default email client
+    window.location.href = mailto;
   };
 
   return (
@@ -89,24 +90,24 @@ export const Modals: React.FC<ModalsProps> = ({
             {/* Modal Body */}
             <div className="p-6">
               {demoSubmitted ? (
-                <div className="text-center py-8 space-y-4">
+                <div className="text-center py-8 space-y-5">
                   <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 mx-auto flex items-center justify-center">
                     <CheckCircle2 className="w-8 h-8" />
                   </div>
-                  <h4 className="text-xl font-bold text-white">Aanvraag Verzonden!</h4>
-                  <p className="text-sm text-neutral-300 max-w-sm mx-auto">
-                    Je demo-aanvraag is verstuurd naar <strong>info@costcards.io</strong>. Wij nemen snel contact op via <strong>{demoForm.email}</strong> om de afspraak definitief in te plannen.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setDemoSubmitted(false);
-                      onCloseDemo();
-                    }}
-                    className="mt-4 px-6 py-2.5 text-xs font-bold text-white bg-white/10 rounded-lg hover:bg-white/20 cursor-pointer"
-                  >
-                    Venster Sluiten
-                  </button>
+                  <h4 className="text-xl font-bold text-white">Bedankt voor je aanvraag.</h4>
+
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setDemoSubmitted(false);
+                        onCloseDemo();
+                      }}
+                      className="px-6 py-2.5 text-xs font-bold text-white bg-white/10 rounded-lg hover:bg-white/20 cursor-pointer"
+                    >
+                      Sluiten
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={handleDemoSubmit} className="space-y-4">
@@ -185,30 +186,16 @@ export const Modals: React.FC<ModalsProps> = ({
                     </select>
                   </div>
 
-                  {errorMsg && (
-                    <p className="text-xs text-red-400 font-medium">{errorMsg}</p>
-                  )}
-
                   <div className="pt-2">
                     <button
                       type="submit"
-                      disabled={isSubmitting}
-                      className="w-full py-3 text-sm font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-xl shadow-lg hover:opacity-95 transition-all cursor-pointer flex items-center justify-center gap-2 disabled:opacity-50"
+                      className="w-full py-3 text-sm font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-xl shadow-lg hover:opacity-95 transition-all cursor-pointer flex items-center justify-center gap-2"
                     >
-                      {isSubmitting ? (
-                        <>
-                          <Loader2 className="w-4 h-4 animate-spin" />
-                          <span>Aanvraag versturen naar info@costcards.io...</span>
-                        </>
-                      ) : (
-                        <>
-                          <span>Bevestig 30-Minuten Demo</span>
-                          <ArrowRight className="w-4 h-4" />
-                        </>
-                      )}
+                      <Mail className="w-4 h-4" />
+                      <span>Verstuur naar CostCards</span>
                     </button>
                     <span className="block text-[11px] text-center text-neutral-400 mt-2">
-                      De aanvraag wordt rechtstreeks verstuurd naar info@costcards.io. Geen opdringerige verkopers.
+                      Opent je e-mailclient met alle gegevens voorgedefinieerd voor info@costcards.io
                     </span>
                   </div>
                 </form>
