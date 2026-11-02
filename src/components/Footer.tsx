@@ -1,37 +1,30 @@
 import React, { useState } from 'react';
-import { ArrowRight, ShieldCheck, Lock, CheckCircle2, Mail, ExternalLink } from 'lucide-react';
+import { ShieldCheck, Lock, CheckCircle2, Mail } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FooterProps {
   onOpenDemo: () => void;
 }
 
 export const Footer: React.FC<FooterProps> = ({ onOpenDemo }) => {
+  const { t } = useLanguage();
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
-  const [activeMailtoUrl, setActiveMailtoUrl] = useState('');
   const [error, setError] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !email.includes('@')) {
-      setError('Vul een geldig zakelijk e-mailadres in.');
+      setError(t.footer.emailError);
       return;
     }
     setError('');
 
     const recipient = 'info@costcards.io';
-    const subject = `Demo Aanvraag via Footer: ${email}`;
-    const body = `Beste CostCards Team,
-
-Hierbij vraag ik graag een demo aan.
-
-Mijn e-mailadres: ${email}
-
-Met vriendelijke groet,
-${email}`;
+    const subject = t.footer.emailSubject(email);
+    const body = t.footer.emailBody(email);
 
     const mailto = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    setActiveMailtoUrl(mailto);
     setSubmitted(true);
 
     // Trigger default email app
@@ -47,13 +40,13 @@ ${email}`;
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-14 relative z-10 border-b border-white/10">
         <div className="max-w-3xl mx-auto text-center space-y-5">
           <span className="text-xs font-mono uppercase tracking-widest text-[#FF5A5F] font-bold">
-            BESCHERM JE MARGES
+            {t.footer.tag}
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            Stop met gokken naar je marges. Boek vandaag een demo.
+            {t.footer.title}
           </h2>
           <p className="text-neutral-300 text-sm sm:text-base max-w-xl mx-auto">
-            Ontdek hoe verpakkingsbedrijven, brouwerijen en industriële producenten Excel-chaos vervangen door modulaire CostCards.
+            {t.footer.subtitle}
           </p>
 
           {/* Quick Demo Request Form */}
@@ -61,7 +54,7 @@ ${email}`;
             {submitted ? (
               <div className="p-4 rounded-xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-sm text-center flex items-center justify-center gap-2 font-bold">
                 <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />
-                <span>Bedankt voor je aanvraag.</span>
+                <span>{t.footer.thankYou}</span>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="space-y-2">
@@ -73,7 +66,7 @@ ${email}`;
                       setEmail(e.target.value);
                       if (error) setError('');
                     }}
-                    placeholder="Vul je zakelijke e-mail in..."
+                    placeholder={t.footer.emailPlaceholder}
                     className="flex-1 px-4 py-3 rounded-xl bg-[#14141B] border border-white/15 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-[#FF5A5F] text-xs"
                   />
                   <button
@@ -81,12 +74,12 @@ ${email}`;
                     className="px-5 py-3 rounded-xl font-bold text-xs text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] hover:opacity-95 transition-opacity flex items-center justify-center gap-2 cursor-pointer shrink-0 shadow-lg shadow-[#FF5A5F]/20"
                   >
                     <Mail className="w-3.5 h-3.5" />
-                    <span>Vraag Demo Aan via E-mail</span>
+                    <span>{t.footer.emailButton}</span>
                   </button>
                 </div>
                 {error && <p className="text-xs text-red-400 text-left pl-1">{error}</p>}
                 <p className="text-[11px] text-neutral-400">
-                  Opent je e-mailclient met alle gegevens voor info@costcards.io · Geen verplichting
+                  {t.footer.emailNote}
                 </p>
               </form>
             )}
@@ -109,54 +102,54 @@ ${email}`;
             </div>
 
             <p className="text-xs text-neutral-400 max-w-sm leading-relaxed">
-              Modulaire stuklijsten (BOM), kostprijsberekening voor productie en real-time margesimulatiesoftware voor kmo-producenten.
+              {t.footer.brandDesc}
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-1 text-xs text-neutral-400">
               <div className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-md border border-white/5 text-[11px]">
                 <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>Gecertificeerde AI Software</span>
+                <span>{t.footer.badgeAi}</span>
               </div>
               <div className="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-md border border-white/5 text-[11px]">
                 <Lock className="w-3.5 h-3.5 text-sky-400" />
-                <span>Enterprise Geëncripteerd</span>
+                <span>{t.footer.badgeEncrypted}</span>
               </div>
             </div>
           </div>
 
           {/* Links Column 1 */}
           <div className="space-y-2.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Platform</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t.footer.colPlatform}</h4>
             <ul className="space-y-1.5 text-xs">
               <li>
-                <a href="#how-it-works" className="hover:text-white transition-colors">Hoe het werkt</a>
+                <a href="#how-it-works" className="hover:text-white transition-colors">{t.footer.linkHowItWorks}</a>
               </li>
               <li>
-                <a href="#features" className="hover:text-white transition-colors">Modulaire Cost Cards</a>
+                <a href="#features" className="hover:text-white transition-colors">{t.footer.linkModularCards}</a>
               </li>
               <li>
-                <a href="#features" className="hover:text-white transition-colors">De Onderhandelaar</a>
+                <a href="#features" className="hover:text-white transition-colors">{t.footer.linkNegotiator}</a>
               </li>
               <li>
-                <a href="#product" className="hover:text-white transition-colors">Spreadsheets vs CostCards</a>
+                <a href="#product" className="hover:text-white transition-colors">{t.footer.linkSpreadsheetVs}</a>
               </li>
             </ul>
           </div>
 
           {/* Links Column 2 */}
           <div className="space-y-2.5">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Bedrijf</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">{t.footer.colCompany}</h4>
             <ul className="space-y-1.5 text-xs">
               <li>
                 <button type="button" onClick={onOpenDemo} className="hover:text-white transition-colors text-left font-bold text-[#FFAA40]">
-                  Boek een Demo
+                  {t.footer.linkBookDemo}
                 </button>
               </li>
               <li>
-                <a href="#faq" className="hover:text-white transition-colors">Veelgestelde Vragen</a>
+                <a href="#faq" className="hover:text-white transition-colors">{t.footer.linkFaq}</a>
               </li>
               <li>
-                <a href="https://www.costcards.io" className="hover:text-white transition-colors">Documentatie</a>
+                <a href="https://www.costcards.io" className="hover:text-white transition-colors">{t.footer.linkDocs}</a>
               </li>
               <li>
                 <a href="mailto:info@costcards.io" className="hover:text-white transition-colors">info@costcards.io</a>
@@ -169,11 +162,11 @@ ${email}`;
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-400">
           <div>
-            &copy; {new Date().getFullYear()} CostCards (costcards.io). Alle rechten voorbehouden.
+            &copy; {new Date().getFullYear()} CostCards (costcards.io). {t.footer.copyright}
           </div>
 
           <div className="flex items-center gap-1.5 text-neutral-300">
-            <span>Een initiatief van</span>
+            <span>{t.footer.initiativeBy}</span>
             <a
               href="https://www.costcards.io"
               className="text-white hover:text-[#FFAA40] font-semibold underline underline-offset-4 decoration-[#FF5A5F] transition-colors"

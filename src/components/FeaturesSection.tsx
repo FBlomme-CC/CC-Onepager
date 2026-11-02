@@ -12,79 +12,44 @@ import {
   ArrowRight,
   CheckCircle2,
 } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FeaturesSectionProps {
   onOpenDemo: () => void;
 }
 
 export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) => {
-  // 6 Modular Cost Cards definitions with spacious dimensions
-  const COST_CARDS = [
+  const { t } = useLanguage();
+
+  const cardIcons: Record<string, React.ComponentType<{ className?: string }>> = {
+    rawMaterial: Package,
+    labour: Users,
+    machine: Factory,
+    energy: Zap,
+    packaging: Package,
+    scrap: AlertTriangle,
+  };
+
+  const pillarMeta = [
     {
-      id: 'rawMaterial',
-      num: '01',
-      category: 'RAW MATERIAL',
-      title: 'Kraftboard 350g',
-      specs: 'Yield 94.2% · FSC Mix',
-      cost: 1.45,
-      unit: '/ kg',
-      theme: 'white',
-      icon: Package,
+      icon: Layers,
+      accentColor: 'text-[#FF5A5F]',
+      badgeBg: 'bg-[#FF5A5F]/15 border-[#FF5A5F]/30 text-[#FF5A5F]',
     },
     {
-      id: 'labour',
-      num: '02',
-      category: 'DIRECT LABOUR',
-      title: 'Operator Setup',
-      specs: '12 min shift cycle',
-      cost: 0.65,
-      unit: '/ pass',
-      theme: 'coral',
-      icon: Users,
+      icon: Handshake,
+      accentColor: 'text-[#FFAA40]',
+      badgeBg: 'bg-[#FFAA40]/15 border-[#FFAA40]/30 text-[#FFAA40]',
     },
     {
-      id: 'machine',
-      num: '03',
-      category: 'MACHINE RATE',
-      title: 'Heidelberg XL Press',
-      specs: 'Press hourly pass',
-      cost: 0.85,
-      unit: '/ sheet',
-      theme: 'slate',
-      icon: Factory,
+      icon: BarChart3,
+      accentColor: 'text-sky-400',
+      badgeBg: 'bg-sky-500/15 border-sky-500/30 text-sky-400',
     },
     {
-      id: 'energy',
-      num: '04',
-      category: 'ENERGY & POWER',
-      title: 'UV Drying Pass',
-      specs: '0.42 kWh peak load',
-      cost: 0.28,
-      unit: '/ kWh',
-      theme: 'amber',
-      icon: Zap,
-    },
-    {
-      id: 'packaging',
-      num: '05',
-      category: 'PACKAGING',
-      title: 'Pallet Outer Box',
-      specs: 'Corrugated 3-ply',
-      cost: 0.32,
-      unit: '/ unit',
-      theme: 'sky',
-      icon: Package,
-    },
-    {
-      id: 'scrap',
-      num: '06',
-      category: 'SCRAP & WASTE',
-      title: '4.8% Trim Loss',
-      specs: 'Die-cut allowance',
-      cost: 0.12,
-      unit: '/ margin',
-      theme: 'rose',
-      icon: AlertTriangle,
+      icon: Bot,
+      accentColor: 'text-emerald-400',
+      badgeBg: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400',
     },
   ];
 
@@ -102,59 +67,11 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
     setActiveCards((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const totalUnitCost = COST_CARDS.reduce((acc, card) => {
+  const totalUnitCost = t.features.interactiveCards.reduce((acc, card) => {
     return acc + (activeCards[card.id] ? card.cost : 0);
   }, 0);
 
   const activeCount = Object.values(activeCards).filter(Boolean).length;
-
-  // The 4 Core Platform Features for the Visual Listing
-  const FEATURE_LIST = [
-    {
-      id: 'feature-01',
-      num: '01',
-      title: 'Modulaire builder',
-      category: 'VISUELE BOM ARCHITECTUUR',
-      description: 'Stapel grondstoffen, machinetijden, arbeid en opslag als fysieke kaarten. Maak complexe samengestelde producten in enkele seconden inzichtelijk.',
-      highlights: ['Atomaire kaartstructuur', 'Real-time BOM herberekening', 'Multi-level afval- & scrapfaktoren'],
-      icon: Layers,
-      accentColor: 'text-[#FF5A5F]',
-      badgeBg: 'bg-[#FF5A5F]/15 border-[#FF5A5F]/30 text-[#FF5A5F]',
-    },
-    {
-      id: 'feature-02',
-      num: '02',
-      title: 'De Onderhandelaar',
-      category: 'COMMERCIËLE MARGEBEWAKING',
-      description: 'Laat je salesteam live offertes testen en kortingspercentages simuleren met harde EBITDA-bewakers die verlieslatende offertes direct blokkeren.',
-      highlights: ['Real-time volumestaffels', 'Color-coded margedrempels', '1-Klik PDF-offertes'],
-      icon: Handshake,
-      accentColor: 'text-[#FFAA40]',
-      badgeBg: 'bg-[#FFAA40]/15 border-[#FFAA40]/30 text-[#FFAA40]',
-    },
-    {
-      id: 'feature-03',
-      num: '03',
-      title: 'Portfolio Analytics & Inzichten',
-      category: 'STRATEGISCHE VISIBILITEIT',
-      description: 'Krijg een panoramisch overzicht over al je afgewerkte SKUs. Detecteer sluipende marge-erosie bij klanten voordat facturen uitsturen.',
-      highlights: ['Gevoeligheidsanalyse voor grondstoffen', 'Detectie van verlieslatende accounts', 'Bi-directionele ERP-koppeling'],
-      icon: BarChart3,
-      accentColor: 'text-sky-400',
-      badgeBg: 'bg-sky-500/15 border-sky-500/30 text-sky-400',
-    },
-    {
-      id: 'feature-[#04]',
-      num: '04',
-      title: 'AI Simulatie & Budget Forecast',
-      category: 'VOORSPELLENDE INTELLIGENTIE',
-      description: 'Simuleer plotse marktshocks (zoals +8% staal of +25% energie) over meer dan 400 producten. Genereer een volgend-jaar budget in seconden.',
-      highlights: ['1.2s Portfolio-brede AI scan', 'Volgend-jaar indexatie in 1 klik', 'Automatische toeslagberekeningen'],
-      icon: Bot,
-      accentColor: 'text-emerald-400',
-      badgeBg: 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400',
-    },
-  ];
 
   const getThemeClasses = (theme: string, isActive: boolean) => {
     if (!isActive) {
@@ -186,13 +103,13 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
         {/* Section Header */}
         <div className="max-w-2xl mx-auto text-center space-y-3 mb-12">
           <div className="text-xs font-mono uppercase tracking-widest text-[#FF5A5F] font-bold">
-            INTERACTIEF OVERZICHT
+            {t.features.tag}
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
-            De CostCards Builder in Actie
+            {t.features.title}
           </h2>
           <p className="text-neutral-400 text-sm leading-relaxed">
-            Klik op onderstaande kaarten om ze in- of uit te schakelen en zie hoe de berekende kostprijs direct reageert.
+            {t.features.subtitle}
           </p>
         </div>
 
@@ -203,27 +120,27 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/10">
             <div>
               <span className="text-xs font-mono font-bold text-[#FF5A5F] uppercase tracking-wider block">
-                INTERACTIEVE DEMO
+                {t.features.demoBadge}
               </span>
               <h3 className="text-lg font-bold text-white mt-0.5">
-                Geselecteerd Product Deck: Custom Printed Verpakking
+                {t.features.deckTitle}
               </h3>
             </div>
 
             <div className="flex items-center gap-4 bg-[#181824] px-5 py-3 rounded-xl border border-white/10 shrink-0">
               <div className="text-left">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">
-                  BEREKENDE EENHEIDSKOST
+                  {t.features.unitCostLabel}
                 </span>
                 <span className="text-xs text-neutral-400 font-mono">
-                  {activeCount} van 6 kaarten actief
+                  {t.features.cardsActiveCount(activeCount, t.features.interactiveCards.length)}
                 </span>
               </div>
               <div className="pl-4 border-l border-white/10">
                 <span className="text-2xl sm:text-3xl font-extrabold font-mono text-[#FFAA40]">
                   €{totalUnitCost.toFixed(2)}
                 </span>
-                <span className="text-xs text-neutral-400 ml-1">/ st</span>
+                <span className="text-xs text-neutral-400 ml-1">{t.features.unitSuffix}</span>
               </div>
             </div>
           </div>
@@ -231,9 +148,9 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
           {/* GROTERE KAARTEN FAN CONTAINER - Duidelijk zichtbaar, ruime kaarten */}
           <div className="py-6 overflow-x-auto no-scrollbar">
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 min-w-[700px] xl:min-w-0">
-              {COST_CARDS.map((card) => {
+              {t.features.interactiveCards.map((card) => {
                 const isActive = activeCards[card.id];
-                const IconComp = card.icon;
+                const IconComp = cardIcons[card.id] || Package;
 
                 return (
                   <button
@@ -266,7 +183,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
 
                     {/* Bottom Cost Rate */}
                     <div className="pt-3 border-t border-current/15 flex items-baseline justify-between">
-                      <span className="text-[10px] uppercase font-bold opacity-70">TARIEF</span>
+                      <span className="text-[10px] uppercase font-bold opacity-70">{t.features.rateLabel}</span>
                       <div className="text-right">
                         <span className="font-mono text-base sm:text-lg font-black">
                           €{card.cost.toFixed(2)}
@@ -284,7 +201,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
                             : 'bg-black/40 text-neutral-400'
                         }`}
                       >
-                        {isActive ? 'AAN' : 'UIT'}
+                        {isActive ? t.features.badgeOn : t.features.badgeOff}
                       </span>
                     </div>
                   </button>
@@ -295,7 +212,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
 
           <div className="text-center text-xs text-neutral-400 flex items-center justify-center gap-2">
             <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-            <span>Klik op een kaart om het effect op de totale eenheidskost direct te zien.</span>
+            <span>{t.features.interactiveHint}</span>
           </div>
 
         </div>
@@ -306,16 +223,17 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
         <div className="space-y-6">
           <div className="text-center max-w-2xl mx-auto mb-8 space-y-2">
             <div className="text-xs font-mono uppercase tracking-widest text-[#FFAA40] font-bold">
-              KERNFUNCTIONALITEITEN
+              {t.features.pillarsTag}
             </div>
             <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              4 Pijlers van CostCards
+              {t.features.pillarsTitle}
             </h3>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {FEATURE_LIST.map((feat) => {
-              const IconComp = feat.icon;
+            {t.features.pillars.map((feat, idx) => {
+              const meta = pillarMeta[idx];
+              const IconComp = meta.icon;
               return (
                 <div
                   key={feat.id}
@@ -323,7 +241,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
                 >
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${feat.badgeBg}`}>
+                      <span className={`text-[10px] font-mono font-bold uppercase tracking-wider px-2.5 py-1 rounded-md border ${meta.badgeBg}`}>
                         {feat.category}
                       </span>
                       <span className="font-mono text-sm font-bold text-neutral-500">
@@ -332,7 +250,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
                     </div>
 
                     <h4 className="text-xl font-bold text-white flex items-center gap-2.5">
-                      <IconComp className={`w-5 h-5 ${feat.accentColor}`} />
+                      <IconComp className={`w-5 h-5 ${meta.accentColor}`} />
                       {feat.title}
                     </h4>
 
@@ -343,7 +261,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
 
                   <div className="pt-3 border-t border-white/5 space-y-2">
                     <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400 block">
-                      BELANGRIJKSTE VOORDELEN:
+                      {t.features.keyBenefitsLabel}
                     </span>
                     <ul className="space-y-1.5 text-xs text-neutral-200">
                       {feat.highlights.map((h, hIdx) => (
@@ -366,7 +284,7 @@ export const FeaturesSection: React.FC<FeaturesSectionProps> = ({ onOpenDemo }) 
               onClick={onOpenDemo}
               className="px-6 py-3.5 text-xs font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer inline-flex items-center gap-2"
             >
-              <span>Vraag een Demonstratie Aan</span>
+              <span>{t.features.cta}</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>

@@ -4,21 +4,26 @@ import {
   TrendingUp,
   Check,
 } from 'lucide-react';
-import { HERO_CARDS, CostCardItem } from '../data/content';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HeroProps {
   onOpenDemo: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
-  const [cards, setCards] = useState<CostCardItem[]>(HERO_CARDS);
+  const { t } = useLanguage();
+  const [cardOrder, setCardOrder] = useState<string[]>([
+    'card-material',
+    'card-overhead',
+    'card-machine',
+  ]);
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     if (isHovered) return;
 
     const timer = setInterval(() => {
-      setCards((prev) => {
+      setCardOrder((prev) => {
         const [first, ...rest] = prev;
         return [...rest, first];
       });
@@ -28,13 +33,17 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
   }, [isHovered]);
 
   const bringToFront = (id: string) => {
-    setCards((prev) => {
-      const clicked = prev.find((c) => c.id === id);
-      if (!clicked) return prev;
-      const rest = prev.filter((c) => c.id !== id);
-      return [clicked, ...rest];
+    setCardOrder((prev) => {
+      if (prev[0] === id) return prev;
+      const rest = prev.filter((cId) => cId !== id);
+      return [id, ...rest];
     });
   };
+
+  // Map card order to current localized card items
+  const cards = cardOrder
+    .map((id) => t.hero.cards.find((c) => c.id === id))
+    .filter((c): c is NonNullable<typeof c> => c !== undefined);
 
   return (
     <section className="relative pt-28 pb-16 lg:pt-36 lg:pb-24 overflow-hidden bg-[#0A0A0C]">
@@ -49,19 +58,19 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
           <div className="lg:col-span-6 space-y-6 text-left z-10">
             {/* H1 */}
             <h1 className="text-4xl sm:text-5xl xl:text-6xl font-extrabold tracking-tight text-white leading-[1.12] text-balance">
-              Bescherm je{' '}
+              {t.hero.headlinePart1}
               <span className="relative inline-block">
                 <span className="text-gradient-coral drop-shadow-[0_0_25px_rgba(255,90,95,0.45)]">
-                  marges
+                  {t.hero.headlineMargin}
                 </span>
                 <span className="absolute -bottom-1 left-0 right-0 h-[3px] bg-gradient-to-r from-[#FF5A5F] via-[#FFAA40] to-transparent rounded-full opacity-80" />
-              </span>{' '}
-              kaart voor kaart.
+              </span>
+              {t.hero.headlinePart2}
             </h1>
 
             {/* Subtitle */}
             <p className="text-base sm:text-lg text-neutral-300 font-normal leading-relaxed max-w-xl">
-              CostCards is dynamische kostprijs- en margesimulatiesoftware voor kmo-producenten. Vervang spreadsheetchaos door verbonden bouwstenen.
+              {t.hero.subtitle}
             </p>
 
             {/* CTA */}
@@ -71,16 +80,16 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
                 onClick={onOpenDemo}
                 className="relative group px-8 py-4 text-sm font-bold text-white bg-gradient-to-r from-[#FF5A5F] via-[#FA6B65] to-[#FFAA40] rounded-xl shadow-[0_4px_25px_rgba(255,90,95,0.4)] hover:shadow-[0_8px_35px_rgba(255,90,95,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all duration-200 inline-flex items-center justify-center gap-2 cursor-pointer"
               >
-                <span>Boek een Demo</span>
+                <span>{t.hero.cta}</span>
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
 
             {/* Key benefits */}
             <div className="pt-2 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs text-neutral-400 font-medium">
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> AI-ondersteund</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> Real-time BOM synchronisatie</span>
-              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> Directe margesimulatie</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> {t.hero.badgeAi}</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> {t.hero.badgeBom}</span>
+              <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-emerald-400" /> {t.hero.badgeMargin}</span>
             </div>
           </div>
 
@@ -212,7 +221,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
                             : 'text-neutral-400'
                         }`}
                       >
-                        TARIEFSPECIFICATIE
+                        {t.hero.rateSpec}
                       </span>
                       <div className="text-right">
                         <span
@@ -282,7 +291,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
                         {card.marginImpact}
                       </span>
                       <span className="text-[10px] uppercase font-bold tracking-widest opacity-60">
-                        KLIK KAART
+                        {t.hero.clickCard}
                       </span>
                     </div>
 
@@ -290,7 +299,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenDemo }) => {
                     {index === 0 && (
                       <div className="absolute -bottom-3 right-6 bg-[#0A0A0C] text-white border border-white/20 text-[10px] font-mono px-2.5 py-1 rounded-full shadow-lg flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#FF5A5F] animate-ping" />
-                        <span>LIVE BOM SYNC ACTIEF</span>
+                        <span>{t.hero.liveSync}</span>
                       </div>
                     )}
                   </div>

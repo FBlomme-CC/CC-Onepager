@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, Globe } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface HeaderProps {
   onOpenDemo: () => void;
@@ -7,10 +8,11 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onOpenDemo }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { language, setLanguage, t } = useLanguage();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-[#0A0A0C]/90 backdrop-blur-md border-b border-white/10 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-4 lg:gap-8">
         
         {/* Zone 1: Merknaam */}
         <a href="#" className="flex items-center gap-2.5 group cursor-pointer focus-visible:outline-none rounded-lg whitespace-nowrap shrink-0">
@@ -24,52 +26,110 @@ export const Header: React.FC<HeaderProps> = ({ onOpenDemo }) => {
         </a>
 
         {/* Zone 2: Navigatie Links */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-neutral-300">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-sm font-medium text-neutral-300">
           <a
             href="#how-it-works"
             className="hover:text-white transition-colors duration-150 py-1 whitespace-nowrap shrink-0"
           >
-            Hoe het werkt
+            {t.nav.howItWorks}
           </a>
           <a
             href="#product"
             className="hover:text-white transition-colors duration-150 py-1 whitespace-nowrap shrink-0"
           >
-            Spreadsheets vs CostCards
+            {t.nav.product}
           </a>
           <a
             href="#features"
             className="hover:text-white transition-colors duration-150 py-1 whitespace-nowrap shrink-0"
           >
-            Functionaliteiten
+            {t.nav.features}
           </a>
           <a
             href="#faq"
             className="hover:text-white transition-colors duration-150 py-1 whitespace-nowrap shrink-0"
           >
-            Veelgestelde Vragen
+            {t.nav.faq}
           </a>
         </nav>
 
-        {/* Zone 3: Primair Actieknop */}
+        {/* Zone 3: Taalselector & Primair Actieknop (Desktop) */}
         <div className="hidden md:flex items-center gap-3 shrink-0">
+          {/* Taalselector */}
+          <div
+            className="flex items-center rounded-lg bg-[#14141B] border border-white/10 p-0.5 text-xs font-semibold"
+            role="group"
+            aria-label="Language selection"
+          >
+            <button
+              type="button"
+              onClick={() => setLanguage('nl')}
+              className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                language === 'nl'
+                  ? 'bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] text-white shadow-sm font-bold'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+              title="Nederlands"
+            >
+              NL
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage('en')}
+              className={`px-2.5 py-1 rounded-md transition-all cursor-pointer ${
+                language === 'en'
+                  ? 'bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] text-white shadow-sm font-bold'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+              title="English"
+            >
+              EN
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={onOpenDemo}
             className="px-5 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-lg shadow-[0_2px_14px_rgba(255,90,95,0.35)] hover:shadow-[0_4px_20px_rgba(255,90,95,0.5)] hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 cursor-pointer flex items-center gap-2 whitespace-nowrap shrink-0"
           >
-            <span>Boek een Demo</span>
+            <span>{t.nav.bookDemo}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
 
-        {/* Mobiele menu knop */}
-        <div className="md:hidden flex items-center">
+        {/* Mobiele sectie: Taalselector & menuknop */}
+        <div className="md:hidden flex items-center gap-2">
+          {/* Mobile compact language switcher */}
+          <div className="flex items-center rounded-lg bg-[#14141B] border border-white/10 p-0.5 text-[11px] font-semibold">
+            <button
+              type="button"
+              onClick={() => setLanguage('nl')}
+              className={`px-2 py-0.5 rounded transition-all ${
+                language === 'nl'
+                  ? 'bg-[#FF5A5F] text-white font-bold'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              NL
+            </button>
+            <button
+              type="button"
+              onClick={() => setLanguage('en')}
+              className={`px-2 py-0.5 rounded transition-all ${
+                language === 'en'
+                  ? 'bg-[#FF5A5F] text-white font-bold'
+                  : 'text-neutral-400 hover:text-white'
+              }`}
+            >
+              EN
+            </button>
+          </div>
+
           <button
             type="button"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="p-2 rounded-lg text-neutral-400 hover:text-white hover:bg-white/5"
-            aria-label="Navigatiemenu openen"
+            aria-label={t.nav.openMenu}
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -84,31 +144,63 @@ export const Header: React.FC<HeaderProps> = ({ onOpenDemo }) => {
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-neutral-200 hover:text-white hover:bg-white/5 rounded-md"
           >
-            Hoe het werkt
+            {t.nav.howItWorks}
           </a>
           <a
             href="#product"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-neutral-200 hover:text-white hover:bg-white/5 rounded-md"
           >
-            Spreadsheets vs CostCards
+            {t.nav.product}
           </a>
           <a
             href="#features"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-neutral-200 hover:text-white hover:bg-white/5 rounded-md"
           >
-            Functionaliteiten
+            {t.nav.features}
           </a>
           <a
             href="#faq"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-neutral-200 hover:text-white hover:bg-white/5 rounded-md"
           >
-            Veelgestelde Vragen
+            {t.nav.faq}
           </a>
 
-          <div className="pt-4 border-t border-white/10 flex flex-col gap-2.5">
+          {/* Mobile drawer language switch row */}
+          <div className="pt-2 pb-1 border-t border-white/5 flex items-center justify-between px-3 text-xs text-neutral-300">
+            <span className="flex items-center gap-1.5 font-medium">
+              <Globe className="w-4 h-4 text-neutral-400" />
+              <span>Taal / Language</span>
+            </span>
+            <div className="flex items-center rounded-lg bg-[#191924] border border-white/10 p-0.5 text-xs font-semibold">
+              <button
+                type="button"
+                onClick={() => setLanguage('nl')}
+                className={`px-3 py-1 rounded transition-all ${
+                  language === 'nl'
+                    ? 'bg-[#FF5A5F] text-white font-bold'
+                    : 'text-neutral-400'
+                }`}
+              >
+                Nederlands
+              </button>
+              <button
+                type="button"
+                onClick={() => setLanguage('en')}
+                className={`px-3 py-1 rounded transition-all ${
+                  language === 'en'
+                    ? 'bg-[#FF5A5F] text-white font-bold'
+                    : 'text-neutral-400'
+                }`}
+              >
+                English
+              </button>
+            </div>
+          </div>
+
+          <div className="pt-3 border-t border-white/10 flex flex-col gap-2.5">
             <button
               type="button"
               onClick={() => {
@@ -117,7 +209,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpenDemo }) => {
               }}
               className="w-full py-3 text-center text-sm font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-lg shadow-md"
             >
-              Boek een Demo
+              {t.nav.bookDemo}
             </button>
           </div>
         </div>

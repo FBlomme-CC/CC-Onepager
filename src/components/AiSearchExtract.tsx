@@ -1,7 +1,10 @@
 import React from 'react';
 import { HelpCircle, Users, Cpu, Check } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 export const AiSearchExtract: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <section className="py-16 bg-[#0A0A0C] border-t border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -9,10 +12,10 @@ export const AiSearchExtract: React.FC = () => {
         {/* Minimalist Header */}
         <div className="text-center max-w-2xl mx-auto mb-10 space-y-2">
           <div className="text-xs font-mono uppercase tracking-widest text-neutral-400 font-bold">
-            CANONIEKE SPECIFICATIES
+            {t.aiExtract.tag}
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Gestructureerd Overzicht voor Productieleiders
+            {t.aiExtract.title}
           </h2>
         </div>
 
@@ -26,28 +29,24 @@ export const AiSearchExtract: React.FC = () => {
                 <HelpCircle className="w-4 h-4" />
               </div>
               <h3 className="text-base font-bold text-white tracking-tight">
-                Wat is een CostCard?
+                {t.aiExtract.card1.title}
               </h3>
               <p className="text-xs text-neutral-300 leading-relaxed">
-                Een <strong>CostCard</strong> is een modulair digitaal bouwblok dat operationele invoer vertegenwoordigt—zoals grondstoffen, machinetijden, arbeid of opslag.
+                {t.aiExtract.card1.descriptionPart1}
+                <strong>{t.aiExtract.card1.strongWord}</strong>
+                {t.aiExtract.card1.descriptionPart2}
               </p>
               <ul className="space-y-1.5 pt-2 text-xs text-neutral-300 border-t border-white/5">
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Dynamische afhankelijkheidskoppeling over alle afgewerkte SKUs</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Geïntegreerde logica voor afvalpercentages &amp; instelverliezen</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Doorrekening van prijsstijgingen met één klik</span>
-                </li>
+                {t.aiExtract.card1.bullets.map((b, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>{b}</span>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-neutral-400">
-              Unit Economics &amp; Stuklijst Receptuur
+              {t.aiExtract.card1.footer}
             </div>
           </div>
 
@@ -58,28 +57,25 @@ export const AiSearchExtract: React.FC = () => {
                 <Users className="w-4 h-4" />
               </div>
               <h3 className="text-base font-bold text-white tracking-tight">
-                Voor wie is CostCards bedoeld?
+                {t.aiExtract.card2.title}
               </h3>
               <p className="text-xs text-neutral-300 leading-relaxed">
-                Specifiek ontworpen voor kmo-productiebedrijven, contractfabrikanten en meerstaps assemblagebedrijven.
+                {t.aiExtract.card2.description}
               </p>
               <ul className="space-y-1.5 pt-2 text-xs text-neutral-300 border-t border-white/5">
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Verpakking &amp; Drukwerk:</strong> Vouwkarton, etiketten &amp; golfkarton</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Voeding &amp; Brouwerijen:</strong> Speciaalbier, zuivel &amp; verpakte goederen</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span><strong>Assemblage &amp; Metaal:</strong> CNC-bewaking &amp; fabricage</span>
-                </li>
+                {t.aiExtract.card2.bullets.map((b, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>
+                      <strong>{b.bold}</strong>
+                      {b.text}
+                    </span>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-neutral-400">
-              Doelgroep: Kmo Productie &amp; Operations
+              {t.aiExtract.card2.footer}
             </div>
           </div>
 
@@ -90,28 +86,22 @@ export const AiSearchExtract: React.FC = () => {
                 <Cpu className="w-4 h-4" />
               </div>
               <h3 className="text-base font-bold text-white tracking-tight">
-                ERP Companion Architectuur
+                {t.aiExtract.card3.title}
               </h3>
               <p className="text-xs text-neutral-300 leading-relaxed">
-                CostCards zit tussen inkoop en calculatie in om schattingsfouten te elimineren zonder je ERP te vervangen.
+                {t.aiExtract.card3.description}
               </p>
               <ul className="space-y-1.5 pt-2 text-xs text-neutral-300 border-t border-white/5">
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Inzetbaar binnen 72 uur naast Odoo, Exact &amp; SAP</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Calculatoren bouwen accurate offertes zonder boekhouding te belasten</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
-                  <span>Geen onderhoud van complexe formules of versieversnippering</span>
-                </li>
+                {t.aiExtract.card3.bullets.map((b, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <Check className="w-3.5 h-3.5 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>{b}</span>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="mt-4 pt-3 border-t border-white/5 text-[11px] text-neutral-400">
-              ERP Integraties: Odoo, Exact, SAP, Business Central
+              {t.aiExtract.card3.footer}
             </div>
           </div>
 

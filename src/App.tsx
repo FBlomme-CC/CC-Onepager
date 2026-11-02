@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { LanguageProvider } from './context/LanguageContext';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { HowItWorks } from './components/HowItWorks';
@@ -9,7 +10,7 @@ import { FaqSection } from './components/FaqSection';
 import { Footer } from './components/Footer';
 import { Modals } from './components/Modals';
 
-export default function App() {
+function CostCardsApp() {
   const [demoOpen, setDemoOpen] = useState(false);
 
   return (
@@ -17,7 +18,7 @@ export default function App() {
       {/* Ambient background glows */}
       <div className="fixed inset-0 bg-radial-mesh pointer-events-none -z-10" />
 
-      {/* 1. Header & Navigation */}
+      {/* 1. Header & Navigation (including Language Selector) */}
       <Header
         onOpenDemo={() => setDemoOpen(true)}
       />
@@ -62,5 +63,13 @@ export default function App() {
         onCloseDemo={() => setDemoOpen(false)}
       />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <LanguageProvider>
+      <CostCardsApp />
+    </LanguageProvider>
   );
 }

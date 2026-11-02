@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { FAQS } from '../data/content';
 import { ChevronDown } from 'lucide-react';
+import { useLanguage } from '../context/LanguageContext';
 
 interface FaqSectionProps {
   onOpenDemo: () => void;
@@ -8,6 +8,7 @@ interface FaqSectionProps {
 
 export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenDemo }) => {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const { t } = useLanguage();
 
   const toggle = (idx: number) => {
     setOpenIndex(openIndex === idx ? null : idx);
@@ -20,19 +21,19 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenDemo }) => {
         {/* Header */}
         <div className="text-center space-y-3 mb-12">
           <div className="text-xs font-mono uppercase tracking-widest text-[#FF5A5F] font-bold">
-            VEELGESTELDE VRAGEN
+            {t.faq.tag}
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Veelgestelde Vragen
+            {t.faq.title}
           </h2>
           <p className="text-neutral-400 text-sm leading-relaxed">
-            Directe antwoorden over migratie, meergraads stuklijsten, ERP-interoperabiliteit en databeveiliging.
+            {t.faq.subtitle}
           </p>
         </div>
 
         {/* Accordion list */}
         <div className="space-y-3">
-          {FAQS.map((faq, idx) => {
+          {t.faq.items.map((faq, idx) => {
             const isOpen = openIndex === idx;
             return (
               <div
@@ -76,15 +77,15 @@ export const FaqSection: React.FC<FaqSectionProps> = ({ onOpenDemo }) => {
         {/* Bottom prompt */}
         <div className="mt-10 p-5 rounded-xl bg-white/[0.02] border border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="text-left">
-            <h4 className="text-sm font-bold text-white">Heb je een specifieke machineconfiguratie of ERP-inrichting?</h4>
-            <p className="text-xs text-neutral-400">Onze kostprijsarchitecten bekijken graag je huidige stuklijstopzet tijdens een live demo.</p>
+            <h4 className="text-sm font-bold text-white">{t.faq.ctaBoxTitle}</h4>
+            <p className="text-xs text-neutral-400">{t.faq.ctaBoxSubtitle}</p>
           </div>
           <button
             type="button"
             onClick={onOpenDemo}
             className="px-4 py-2.5 text-xs font-bold text-white bg-gradient-to-r from-[#FF5A5F] to-[#FFAA40] rounded-lg transition-all cursor-pointer shrink-0 shadow-md"
           >
-            Boek een Demo
+            {t.faq.ctaButton}
           </button>
         </div>
 

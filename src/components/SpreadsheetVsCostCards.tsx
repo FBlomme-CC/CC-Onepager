@@ -5,9 +5,11 @@ import {
   XCircle,
   CheckCircle2,
 } from 'lucide-react';
-import { COMPARISON_DATA } from '../data/content';
+import { useLanguage } from '../context/LanguageContext';
 
 export const SpreadsheetVsCostCards: React.FC = () => {
+  const { t } = useLanguage();
+
   return (
     <section id="product" className="py-16 bg-[#0D0D11] border-t border-b border-white/5 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,13 +17,13 @@ export const SpreadsheetVsCostCards: React.FC = () => {
         {/* Section Header - Minimalist */}
         <div className="max-w-2xl mx-auto text-center space-y-3 mb-10">
           <div className="text-xs font-mono uppercase tracking-widest text-[#FF5A5F] font-bold">
-            HET SPREADSHEETPROBLEEM
+            {t.comparison.tag}
           </div>
           <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-            Waarom traditionele spreadsheets je marges aantasten
+            {t.comparison.title}
           </h2>
           <p className="text-neutral-400 text-sm leading-relaxed">
-            Excel is in 1985 gebouwd voor algemene boekhouding—niet voor fluctuerende grondstofprijzen, complexe afvalpercentages en snelle productie-offertes.
+            {t.comparison.subtitle}
           </p>
         </div>
 
@@ -33,13 +35,13 @@ export const SpreadsheetVsCostCards: React.FC = () => {
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-2.5">
                 <FileSpreadsheet className="w-4 h-4 text-red-400" />
-                <h3 className="text-base font-bold text-white">Statische Excel Bestanden</h3>
+                <h3 className="text-base font-bold text-white">{t.comparison.leftTitle}</h3>
               </div>
-              <span className="text-[10px] font-mono text-red-400 font-bold uppercase">HOOG RISICO</span>
+              <span className="text-[10px] font-mono text-red-400 font-bold uppercase">{t.comparison.leftBadge}</span>
             </div>
 
             <div className="space-y-3">
-              {COMPARISON_DATA.slice(0, 3).map((item, idx) => (
+              {t.comparison.data.slice(0, 3).map((item, idx) => (
                 <div key={idx} className="flex items-start gap-2.5 p-2.5 rounded-lg bg-red-950/10 border border-red-500/10 text-xs">
                   <XCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
                   <div>
@@ -56,13 +58,13 @@ export const SpreadsheetVsCostCards: React.FC = () => {
             <div className="flex items-center justify-between pb-3 border-b border-white/10">
               <div className="flex items-center gap-2.5">
                 <Layers className="w-4 h-4 text-[#FF5A5F]" />
-                <h3 className="text-base font-bold text-white">CostCards Platform</h3>
+                <h3 className="text-base font-bold text-white">{t.comparison.rightTitle}</h3>
               </div>
-              <span className="text-[10px] font-mono text-[#FFAA40] font-bold uppercase">DYNAMISCH &amp; GEKOPPELD</span>
+              <span className="text-[10px] font-mono text-[#FFAA40] font-bold uppercase">{t.comparison.rightBadge}</span>
             </div>
 
             <div className="space-y-3">
-              {COMPARISON_DATA.slice(0, 3).map((item, idx) => (
+              {t.comparison.data.slice(0, 3).map((item, idx) => (
                 <div key={idx} className="flex items-start gap-2.5 p-2.5 rounded-lg bg-emerald-950/10 border border-emerald-500/20 text-xs">
                   <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
                   <div>
